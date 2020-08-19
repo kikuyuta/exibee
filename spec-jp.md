@@ -21,4 +21,35 @@
 - 出来たものはオープンソースにする。ライセンスは CC by-sa 4.0 で
   - 他の CC by-sa 4.0 を継承する可能性が高いので必然的にこれになるかと
  
-# 
+# Pocket Exineris
+
+- ExiBee のベースになるほか、単体でも遊べるようにする
+  - モードが有るピンについて
+　- 基本リセットモード(モード番号7)で用いる
+　- BeagleBone でモードを変えているのものは同様に変更しても良い
+　- ヤムを得ない場合は別モードで
+　- 使いたいピン機能がバッティングして仕様を満たせいない可能性あり
+　　- これについては一旦考慮せずに仕様をつくって、ぶつかったらあとで検討
+- コネクタ
+　- ドータボード用コネクタ
+    - 表面実装コネクタ
+	  - [80pin x1 にするか、50pin x2 もしくは 60pin x2 とする](https://www.hirose.com/product/document?clcode=CL0537-0731-3-86&productname=DF12(3.0)-60DP-0.5V(86)&series=DF12&documenttype=Catalog&lang=en&documentid=D31693_ja)
+      - [Armadillo 840m の DIMM コネクタも参照すること](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch04.html#sct.interface-layout-a840m)
+    - [JTAG用 cTI（試作機に実装、本番では実装しない）](http://software-dl.ti.com/ccs/esd/documents/xdsdebugprobes/emu_jtag_connectors.html)
+- SiP: [OSD3358-C-SiP](https://octavosystems.com/octavo_products/osd335x-c-sip/)
+  - SoC: TI AM335x (ARM Cortex-A8 1GHz, 3Dアクセラレータ, PRU)
+  - MEMS 24MHz Oscillator
+  - PMIC: TPS65217C, LDO: TL5209, Passives
+  - BGA 20x20 1.27mm Grid, 27mmx27mm
+- このシリーズは温度範囲の違う2種類しか出回ってない。温度範囲の広い [OSD3358-512M-ICB](https://www.digikey.com/product-detail/en/octavo-systems-llc/OSD3358-512M-ICB/1676-1005-ND/9608235) を使う。
+  - Soc: TI AM3358 (ARM Cortex-A8 1GHz, 3Dアクセラレータ, PRU)
+  - RAM: 512MB DDR3L
+  - EEPROM: 4KB
+  - eMMC: 4GB
+  - Temp: -40°C to 85°C
+- セキュリティ: [Microchip ATECC608A](https://www.microchip.com/wwwproducts/en/ATECC608A)
+  - I2C2 につなげる（BBB/BBG の P9 に出ている。BBG の grove に出ている）
+    - I2C0 はEPROMとPMONにつながっている
+	- Raspberry Pi では I2C1 につながってる
+  - Nerves Hub 用の [Nerves Key](https://github.com/nerves-project/nerves_system_bbb#nerveskey) に該当
+
