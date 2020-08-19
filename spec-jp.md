@@ -164,26 +164,29 @@ LAN 内のマシンの時計の同期精度があがるのは良い
 ## Security
 AM335x に FuseFarm で固有IDがあるのを有効に使えないか
 
-# watchdog reset
+## watchdog reset
 ファームウェアを更新した後に watch dog reset がかかったら
 更新される前のファームウェアでブートするようにする… には何が必要？
 
-# RTCについて
+## RTCについて
 PMICのSLEEP状態で RTC 用の LDO1 のみに電源供給できそう。
 C-SiP のマニュアルでは PMIC ver.C ではできないと明示。
 PMIC のマニュアルでは ver に関係なくできそうに見えるが、
 多くのweb上のドキュメントでうまくいかないようなことが書いてある
 
-# 電池駆動
+## 電池駆動
 こんなのに乾電池を1〜3本直列にするのもありか。
 http://akizukidenshi.com/catalog/g/gK-13065/
 
-# 紫色について
-Perple にするか Violet にするか Amethyst にするか。
+## 紫色について
+Elixir 絡みということで、コードネームに紫色を入れるべく検討した。
+紫はいくつかの表現があって、Perple にするか Violet にするか Amethyst にするか調べてみた。
 - [紫](https://ja.wikipedia.org/wiki/紫)
 - [京紫](https://ja.wikipedia.org/wiki/京紫)
 - [江戸紫](https://ja.wikipedia.org/wiki/江戸紫)
 
-色の感じで Elixir 用に使うなら赤みがかった紫の京紫 purple が良い。。
-電源LEDを紫色にとも思ったが無駄に高くなりそうなので将来の課題として。
+色の感じで Elixir 用に使うなら赤みがかった紫の京紫 purple が良い。
+しかしながら、今回は紫をコードネームに使うのはやめてる。
 
+あと、電源LEDやプリント基板のレジストを紫色にとも思ったが
+無駄に高くなりそうなので将来の課題とする。
