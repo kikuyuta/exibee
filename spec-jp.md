@@ -1,8 +1,21 @@
 # ExiBee 仕様（ちょっと設計も）
 
 - Date: 19 Aug 2020
-- Author: KIKUCHI, Yutaka
+- Author: [KIKUCHI, Yutaka](https://github.com/kikuyuta)
 - Rev: 1.4
+
+# 課題点
+- CPUボードをBP2.0 (= Exineris Armadillo = ExiA) 同様の構成にする
+  - DIMMボード同様の Pocket Exineris
+  - それをマウントした CPU ボード
+- 基板の入出力と基板同士の接続をどうするか
+　- Pocket Exineris の入出力とCPUボードへのコネクタピン
+    - 特に無線チップをどうするか
+  - CPUボードの入出力とコンボ・DIO・AIOへのコネクタピン
+- 電源の構成をどうするか
+  - ExiA のコンボ・DIO・AIOへのDC3.3Vは[Armadillo840mの3.3V](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch18.html#sct.power-a840m)から供給されてる
+    - 840m の供給能力は 1.4A max もあるが C-SiP の TI TPS65217C は 3.3V 用 LDO4 は400mAしか供給できない
+
 
 # 基本コンセプト
 
@@ -33,8 +46,9 @@
 - コネクタ
   - ドータボード用コネクタ
     - 表面実装コネクタ
-	  - [80pin x1 にするか、50pin x2 もしくは 60pin x2 とする](https://www.hirose.com/product/document?clcode=CL0537-0731-3-86&productname=DF12(3.0)-60DP-0.5V(86)&series=DF12&documenttype=Catalog&lang=en&documentid=D31693_ja)
-      - [Armadillo 840m の DIMM コネクタも参照すること](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch04.html#sct.interface-layout-a840m)
+	  - [基板対基板コネクタ](https://www.hirose.com/product/document?clcode=CL0537-0731-3-86&productname=DF12(3.0)-60DP-0.5V(86)&series=DF12&documenttype=Catalog&lang=en&documentid=D31693_ja)
+	  の80pin x1 にするか、50pin x2 もしくは 60pin x2 とする
+      - [Armadillo 840m の DIMM コネクタ](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch04.html#sct.interface-layout-a840m)も参照すること
   - [JTAG用 cTI（試作機に実装、本番では実装しない）](http://software-dl.ti.com/ccs/esd/documents/xdsdebugprobes/emu_jtag_connectors.html)
 - SiP: [OSD3358-C-SiP](https://octavosystems.com/octavo_products/osd335x-c-sip/)
   - SoC: TI AM335x (ARM Cortex-A8 1GHz, 3Dアクセラレータ, PRU)
@@ -149,6 +163,7 @@
 AIOボードの能力は越えてほしい気がするので、
 解像度が 12bit を越えて 1chあたり40μs未満の
 ポピュラーなチップとかがあると嬉しい。
+
 
 # その他、検討先送り事項
 
