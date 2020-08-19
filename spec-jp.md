@@ -92,7 +92,6 @@
 # CPUボード
 
 ## 共通 電源
-
 - SiP VIN_AC（以下のどちらか（もしくは両方）がつながったら稼働すること）
   - PoE (IEEE802.3af: DC 48V)
   - DC 24V
@@ -106,9 +105,83 @@
   1. CPUボードをリチウムイオン二次電池等である程度持たせるようにする
   1. 拡張ボードも含めてリチウムイオン二次電池等である程度持たせるようにする
 
+## 共通I/O
+- LED 入出力に従って
+- シリアル：RS422/485 x1
+- シリアル：USB 2.0 x1 (type C)
+- 有線LAN：100BASE-TX x1（SiP のデフォが MII なので 100Mbpsとする）
+- RTC: DS3231（バッテリーバックアップ）
 
-# Comboボード、DIOボード、AIOボード
+# Combo、DIO、AIO
 
-コンボ・DIO・AIO は Pocket Exineris を CPU ボードとして入出力を拡張するボードを装着して 
+コンボ・DIO・AIO は CPU ボードを入出力を拡張するボードに装着して 
 [Phoenix Contact のケース](https://www.phoenixcontact.com/online/portal/jp?1dmy&urile=wcm%3apath%3a/jpja/web/main/products/subcategory_pages/Multifunctional_housings_ME-PLC_P-01-12-08/8706a764-5158-4867-9fa1-f11065f1af6e) に収めたもの。
+
+## Combo（コンボ）
+
+- 絶縁 DI x8
+- 絶縁 DO x4
+- AI x5
+  - AI: 4-20mA, SiP Ain1〜Ain5
+- AO x1
+  - AO: 4-20mA, SiP Ain0 （給電・無給電切替可能なこと）
+- 対応する LED をつけること。
+	
+## DIO（デジタル入出力）
+- 絶縁 DI x16
+- 絶縁 DO x16
+- 対応する LED をつけること。
+  - ？	SiP の GPIO を使うのでも良いが32pinを引き出すことになる
+  - ？	SiP の I2C2 で MCP23017 等を使っても良い
+
+## AIO（アナログ入出力）
+- AI x16
+- AO x16
+
+### ADCチップの選択について
+コンボ用の ADC には CPU ボード自身の SiP Ain を使うつもり。
+- 12ビットの逐次比較型(SAR) ADC
+- 毎秒200kサンプル（5μs/ch）
+- 入力は、8:1アナログ・スイッチにより多重化（8chの一周で40μsぐらい）
+なので 12bit 25kS/s 程度と思って良い。これがコンボ用。
+
+AIOボードの能力は越えてほしい気がするので、
+解像度が 12bit を越えて 1chあたり40μs未満の
+ポピュラーなチップとかがあると嬉しい。
+
+# その他、検討先送り事項
+
+## 温度環境
+-40℃からにしようとするとチップを選ばないとならない。
+少なくとも TI WL1835MOD は-20℃からなので、
+現状の最低動作温度はこれに合わせざるをえない。
+
+## IEEE1588 (PTP) を使うか
+LAN 内のマシンの時計の同期精度があがるのは良い
+使うとしてどう使えるのか要調査 (NTP が使えなくなるので)
+
+## Security
+AM335x に FuseFarm で固有IDがあるのを有効に使えないか
+
+# watchdog reset
+ファームウェアを更新した後に watch dog reset がかかったら
+更新される前のファームウェアでブートするようにする… には何が必要？
+
+# RTCについて：
+PMICのSLEEP状態で RTC 用の LDO1 のみに電源供給できそう。
+C-SiP のマニュアルでは PMIC ver.C ではできないと明示。
+PMIC のマニュアルでは ver に関係なくできそうに見えるが、
+多くのweb上のドキュメントでうまくいかないようなことが書いてある
+
+# 電池駆動：
+こんなのに乾電池を1〜3本直列にするのもありか。
+http://akizukidenshi.com/catalog/g/gK-13065/
+
+# 紫色について
+Perple にするか Violet にするか Amethyst にするか。
+- [紫](https://ja.wikipedia.org/wiki/紫)
+- [京紫](https://ja.wikipedia.org/wiki/京紫)
+- [江戸紫](https://ja.wikipedia.org/wiki/江戸紫)
+色の感じで Elixir 用に使うなら赤みがかった紫の京紫 purple が良い。。
+電源LEDを紫色にとも思ったが無駄に高くなりそうなので将来の課題として。
 
