@@ -1,5 +1,5 @@
-Code name: Pocket Exineris, Exineris Purple
-Date: Fri, 15 Aug 2020
+Code name: ExiBee (Pocket Exineris, Exineris Purple)
+Date: 19 Aug 2020
 Author: KIKUCHI, Yutaka
 
 ==========================================================================
@@ -18,7 +18,7 @@ Author: KIKUCHI, Yutaka
 
 Pocket Exineris (CPU$(A%\$(B!<$(A%I(B)
 
-$(A!$(BExineris Purple $(A$N%Y$(B!<$(A%9$K$J$k$[$+!"$(I+J$(ALe$G$b$(Gg+$(A$Y$k$h$&$K$9$k(B
+$(A!$(BExiBee $(A$N%Y$(B!<$(A%9$K$J$k$[$+!"$(I+J$(ALe$G$b$(Gg+$(A$Y$k$h$&$K$9$k(B
 $(A!$%b$(B!<$(A%I$,SP$k%T%s$K$D$$$F(B
 $(A!!!$;y1>%j%;%C%H%b$(B!<$(A%I(B($(A%b$(B!<$(A%I7,:E(B7)$(A$GSC$$$k(B
 $(A!!!$(BBeagleBone $(A$G%b$(B!<$(A%I$r$(I+y$(A$($F$$$k$N$b$N$OM,$(ILT$(A$K$(I+y$(A8|$7$F$bA<$$(B
@@ -98,7 +98,7 @@ https://www.ti.com/product/WL1835MOD
 
 ==========================================================================
 
-Exineris Purple
+ExiBee
 
 $(A%3%s%\!$(BDIO$(A!$(BAIO $(A$O(B Pocket Exineris $(A$r(B CPU $(A%\$(B!<$(A%I$H$7$F(B
 $(AHk3vA&$r$(I)/$(GZ/$(A$9$k%\$(B!<$(A%I$rW0WE$7$F(B Phoenix Contact $(A$N%1$(B!<$(A%9$K$(I!`$(A$a$?$b$N!#(B
