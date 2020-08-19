@@ -25,17 +25,17 @@
 
 - ExiBee のベースになるほか、単体でも遊べるようにする
   - モードが有るピンについて
-  - 基本リセットモード(モード番号7)で用いる
-  - BeagleBone でモードを変えているのものは同様に変更しても良い
-  - ヤムを得ない場合は別モードで
-  - 使いたいピン機能がバッティングして仕様を満たせいない可能性あり
-    - これについては一旦考慮せずに仕様をつくって、ぶつかったらあとで検討
+    - 基本リセットモード(モード番号7)で用いる
+    - BeagleBone でモードを変えているのものは同様に変更しても良い
+    - ヤムを得ない場合は別モードで
+    - 使いたいピン機能がバッティングして仕様を満たせいない可能性あり
+      - これについては一旦考慮せずに仕様をつくって、ぶつかったらあとで検討
 - コネクタ
   - ドータボード用コネクタ
     - 表面実装コネクタ
 	  - [80pin x1 にするか、50pin x2 もしくは 60pin x2 とする](https://www.hirose.com/product/document?clcode=CL0537-0731-3-86&productname=DF12(3.0)-60DP-0.5V(86)&series=DF12&documenttype=Catalog&lang=en&documentid=D31693_ja)
       - [Armadillo 840m の DIMM コネクタも参照すること](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch04.html#sct.interface-layout-a840m)
-    - [JTAG用 cTI（試作機に実装、本番では実装しない）](http://software-dl.ti.com/ccs/esd/documents/xdsdebugprobes/emu_jtag_connectors.html)
+  - [JTAG用 cTI（試作機に実装、本番では実装しない）](http://software-dl.ti.com/ccs/esd/documents/xdsdebugprobes/emu_jtag_connectors.html)
 - SiP: [OSD3358-C-SiP](https://octavosystems.com/octavo_products/osd335x-c-sip/)
   - SoC: TI AM335x (ARM Cortex-A8 1GHz, 3Dアクセラレータ, PRU)
   - MEMS 24MHz Oscillator
@@ -68,9 +68,9 @@
 	    - これは BBG wireless の場合を踏襲
       - あるいは SiP の SDIO を使うか
 - 電源
-  - SiP VIN_AC: ドータボードコネクタからのDC5V
-  - SiP VIN_USB: ボードの micro USB C コネクタからのDC5V
-  - SiP VIN_BAT: ドータボードコネクタからのバッテリーDC
+  1. SiP VIN_AC: ドータボードコネクタからのDC5V
+  1. SiP VIN_USB: ボードの micro USB C コネクタからのDC5V
+  1. SiP VIN_BAT: ドータボードコネクタからのバッテリーDC
 - コネクタ（SiP の信号を出す、GPIOを除いて46、GPIOは12か32）
   - SiP USB1( 6): 各ボードの USB 2.0 x1
   - SiP MII1(15): 各ボードの 100base-TX x1
@@ -90,3 +90,25 @@
 	- 65mm x 30mm x 5mm : raspberry Pi zero
 
 # CPUボード
+
+## 共通 電源
+
+- SiP VIN_AC（以下のどちらか（もしくは両方）がつながったら稼働すること）
+  - PoE (IEEE802.3af: DC 48V)
+  - DC 24V
+- JIS B3502 の 5.1.1 に準拠、特に瞬時停電は 5.1.1.3 PS2 に準拠。
+  - 要は 10ms (50Hz で半サイクル)の電源断で、電解コンデンサないしはキャパシタから
+  - 供給する電圧が各チップの定格電源電圧の最低レベルを守ること
+- 電源ダウン時にGPIOのどれかを叩く
+  - CPUに割り込みをかけるため
+- CPU ボードの SiP VIN_BAT に供給する電源をもつこと（以下から選択）
+  1. 電源ダウン時にCPUボードをシャットダウンできる容量のキャパシタを持つ
+  1. CPUボードをリチウムイオン二次電池等である程度持たせるようにする
+  1. 拡張ボードも含めてリチウムイオン二次電池等である程度持たせるようにする
+
+
+# Comboボード、DIOボード、AIOボード
+
+コンボ・DIO・AIO は Pocket Exineris を CPU ボードとして入出力を拡張するボードを装着して 
+[Phoenix Contact のケース](https://www.phoenixcontact.com/online/portal/jp?1dmy&urile=wcm%3apath%3a/jpja/web/main/products/subcategory_pages/Multifunctional_housings_ME-PLC_P-01-12-08/8706a764-5158-4867-9fa1-f11065f1af6e) に収めたもの。
+
