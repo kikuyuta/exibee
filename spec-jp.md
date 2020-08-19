@@ -25,13 +25,13 @@
 
 - ExiBee のベースになるほか、単体でも遊べるようにする
   - モードが有るピンについて
-　- 基本リセットモード(モード番号7)で用いる
-　- BeagleBone でモードを変えているのものは同様に変更しても良い
-　- ヤムを得ない場合は別モードで
-　- 使いたいピン機能がバッティングして仕様を満たせいない可能性あり
-　　- これについては一旦考慮せずに仕様をつくって、ぶつかったらあとで検討
+  - 基本リセットモード(モード番号7)で用いる
+  - BeagleBone でモードを変えているのものは同様に変更しても良い
+  - ヤムを得ない場合は別モードで
+  - 使いたいピン機能がバッティングして仕様を満たせいない可能性あり
+    - これについては一旦考慮せずに仕様をつくって、ぶつかったらあとで検討
 - コネクタ
-　- ドータボード用コネクタ
+  - ドータボード用コネクタ
     - 表面実装コネクタ
 	  - [80pin x1 にするか、50pin x2 もしくは 60pin x2 とする](https://www.hirose.com/product/document?clcode=CL0537-0731-3-86&productname=DF12(3.0)-60DP-0.5V(86)&series=DF12&documenttype=Catalog&lang=en&documentid=D31693_ja)
       - [Armadillo 840m の DIMM コネクタも参照すること](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch04.html#sct.interface-layout-a840m)
@@ -85,7 +85,7 @@
   - SiP PMIC(14): 電源管理用
   - ？ SiP RTC(2): 内部RTC制御用（要る？）
 - 形状：チョコベビーのケースに収まること
-　- 参考：
+  - 参考：
 	- 56mm x 35mm x 5mm : pocket Beagle
 	- 65mm x 30mm x 5mm : raspberry Pi zero
 
