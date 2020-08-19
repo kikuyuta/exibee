@@ -1,0 +1,194 @@
+Code name: Pocket Exineris, Exineris Purple
+Date: Fri, 15 Aug 2020
+Author: KIKUCHI, Yutaka
+
+==========================================================================
+$(A;y1>%3%s%;%W%H#:(B
+$(A!$(BPLC$(GSx$(A$J(B Nerves $(A%^%7%s$rWw3I$9$k(B
+$(A!!!$%3%s%\#:(BCPU $(A%\$(B!<$(A%I$K;y1>5D$JHk3vA&$rIY$7$:$D6`$(ILT$(A$K(B
+$(A!!!$(BDIO$(A#:(BCPU $(A%\$(B!<$(A%I$K%G%8%?%kHk3vA&$r$?$/$5$s(B
+$(A!!!$(BAIO$(A#:(BCPU $(A%\$(B!<$(A%I$K%"%J%m%0Hk3vA&$r$?$/$5$s(B
+$(A!$(BCPU$(A%\$(B!<$(A%I$O$(I+J$(ALe$G$bJ9$($k$h$&$K$7$?$$(B
+$(A!!(BPocketBeagle $(A$d%i%:%Q%$(B0W$(AM,3L6H$N4s$-$5$G!"$h$jJ9$$$d$9$$$N$rD?V8$9(B
+$(A!$(BBeagle Bone Black/Green, Pocket Beagle $(A$H%=%U%H;%$(G_P$(APT$r$b$?$;$k$h$&$K$7$?$$(B
+$(A!!$9$J$o$A(B Nerves $(A$G(B firmware $(A$rWw$k$H$-$K(B export MIX_TARGET=bbb $(A$GWw$(Gj{$(A$G$-$k$HA<$$(B
+$(A!$3v@4$?$b$N$O%*$(B!<$(A%W%s%=$(B!<$(A%9$K$9$k!#%i%$%;%s%9$O(B CC by-sa 4.0 $(A$G!#(B
+
+==========================================================================
+
+Pocket Exineris (CPU$(A%\$(B!<$(A%I(B)
+
+$(A!$(BExineris Purple $(A$N%Y$(B!<$(A%9$K$J$k$[$+!"$(I+J$(ALe$G$b$(Gg+$(A$Y$k$h$&$K$9$k(B
+$(A!$%b$(B!<$(A%I$,SP$k%T%s$K$D$$$F(B
+$(A!!!$;y1>%j%;%C%H%b$(B!<$(A%I(B($(A%b$(B!<$(A%I7,:E(B7)$(A$GSC$$$k(B
+$(A!!!$(BBeagleBone $(A$G%b$(B!<$(A%I$r$(I+y$(A$($F$$$k$N$b$N$OM,$(ILT$(A$K$(I+y$(A8|$7$F$bA<$$(B
+$(A!!!$%d%`$r5C$J$$$(G^[$(A:O$O$(GI1$(A%b$(B!<$(A%I$G(B
+$(A!!!$J9$$$?$$%T%s$(Gq"$(AD\$,%P%C%F%#%s%0$7$FJK$(ILT$(A$r$(I<h$(A$?$;$$$J$$?ID\PT$"$j(B
+$(A!!!!!$$3$l$K$D$$$F$OR;5)?<$(Gle$(A$;$:$KJK$(ILT$(A$r$D$/$C$F!"$V$D$+$C$?$i$"$H$G$(I<D$(GX6(B
+$(A!$%3%M%/%?(B
+$(A!!!$%I$(B!<$(A%?%\$(B!<$(A%ISC%3%M%/%?(B
+$(A!!!!!$(B80pin x1 $(A$K$9$k$+!"(B50pin x2 $(A$b$7$/$O(B 60pin x2 $(A$H$9$k(B
+https://www.hirose.com/product/document?clcode=CL0537-0731-3-86&productname=DF12(3.0)-60DP-0.5V(86)&series=DF12&documenttype=Catalog&lang=en&documentid=D31693_ja
+$(A!!!$(BJTAG$(ASC(B cTI$(A#($(Gf\$(AWw$(Gq"$(A$K$(I(M$(AW0!"1>7,$G$O$(I(M$(AW0$7$J$$#)(B
+http://software-dl.ti.com/ccs/esd/documents/xdsdebugprobes/emu_jtag_connectors.html
+
+$(A!$(BSiP: OSD3358-C-SiP
+	SoC: TI AM335x (ARM Cortex-A8 1GHz, 3D$(A%"%/%;%i%l$(B!<$(A%?(B, PRU)
+	MEMS 24MHz Oscillator
+	PMIC: TPS65217C, LDO: TL5209, Passives
+	BGA 20x20 1.27mm Grid, 27mmx27mm
+https://octavosystems.com/octavo_products/osd335x-c-sip/
+
+$(A!$$3$N%7%j$(B!<$(A%:$ONB6H$(Gn/$(I%'$(A$N$(Gg0$(A$&(B2$(Gj!yK$(A$7$+3v;X$C$F$J$$!#(BOSD3358-512M-ICB $(A$rJ9$&!#(B
+	Soc: TI AM3358 (ARM Cortex-A8 1GHz, 3D$(A%"%/%;%i%l$(B!<$(A%?(B, PRU)
+	RAM: 512MB DDR3L
+	EEPROM: 4KB
+	eMMC: 4GB
+	Temp: -40°C to 85°C
+https://www.digikey.com/product-detail/en/octavo-systems-llc/OSD3358-512M-ICB/1676-1005-ND/9608235
+	
+$(A!$%;%-%e%j%F%#(B: Microchip ATECC608A
+	I2C1 $(A$K$D$J$2$k!##(%j%;%C%H%b$(B!<$(A%I$G$J$$$(Gq"$(AD\#)(B
+	# I2C0 $(A$O(BEPROM$(A$H(BPMON$(A$K$D$J$,$C$F$$$k(B
+	# Raspberry Pi $(A$G$O(B I2C1 $(A$K$D$J$,$C$F$k(B
+https://www.microchip.com/wwwproducts/en/ATECC608A
+https://github.com/nerves-project/nerves_system_bbb#nerveskey
+
+$(A!$%&%)%C%A%I%C%0%?%$%^#:(B
+$(A#?(B	BB$(AM,$(ILT$(A$K(BCPU$(A$N%?%$%^$(B!<$(A$GA<$$$N$G$O(B
+	# $(A$"$($F3V$D$J$i(B MAX6359 $(A$H$+$G(B
+
+$(A!$Hk3vA&#(%\$(B!<$(A%IIO$K$"$k$b$N#)(B
+	$(A!$(BLED
+	$(A!!!$$(GgY$(AT4#:G`(B
+	$(A!!!$$(IHk$(A!";F!"3H!"3`(B USR0$(B!A(BUSR3, SiP GPMC_a5$(B!A(Ba8 (gpio1_21$(B!A(B24)$(A#)(B
+	$(A!$(BRS232$(A#(%G%P%C%0SC%3%s%=$(B!<$(A%k%]$(B!<$(A%H(B, SiP UART0$(A#)(B x1
+	$(A!$(Bmicro USB B (SiP USB0) x1
+	$(A!$(Bmicro SD$(A%+$(B!<$(A%ISC%=%1%C%H(B x1 (SiP MMC0)
+	$(A!$$(G`Rn@(BLAN (WiFi/BLE) x1
+		TI WL1835MOD
+			$(A%l%Y%k$(I+y$(G_P(B(1.8V <-> 3.3V)$(A$r$7$F(B SPI1, UART3 GPIO
+				$(A$3$l$O(B BBG wireless $(A$N$(G^[$(A:O$rL$$(G{q(B
+			$(A$"$k$$$O(B SiP $(A$N(B SDIO $(A$rJ9$&$+(B
+https://www.ti.com/product/WL1835MOD
+
+$(A!$$(GgY$(AT4(B
+	$(A!$(BSiP VIN_AC: $(A%I$(B!<$(A%?%\$(B!<$(A%I%3%M%/%?$+$i$N(BDC5V
+	$(A!$(BSiP VIN_USB: CPU$(A%\$(B!<$(A%I$N(B micro USB B $(A%3%M%/%?$+$i$N(BDC5V
+	$(A!$(BSiP VIN_BAT: $(A%I$(B!<$(A%?%\$(B!<$(A%I%3%M%/%?$+$i$N%P%C%F%j$(B!<(BDC
+
+$(A!$%3%M%/%?#((BSiP $(A$NPE:E$r3v$9!"(BGPIO$(A$r3}$$$F(B46$(A!"(BGPIO$(A$O(B12$(A$+(B32$(A#)(B
+	$(A!$(BSiP USB1( 6): $(A8w%\$(B!<$(A%I$N(B USB 2.0 x1
+	$(A!$(BSiP MII1(15): $(A8w%\$(B!<$(A%I$N(B 100base-TX x1
+$(A#?(B		MII $(A$r3V$A;X$k$h$j(B PHY (LAN8710A$(A5H(B) $(A$rM($7$?aa$,A<$$$+$b(B
+	$(A!$(BSiP UART1(4): $(A8w%\$(B!<$(A%I$N(B RS422/485 x1
+	$(A!$(BSiP Ain0$(B!A(BAin5(6): $(A%3%s%\(BA/D$(ASC(B
+	$(A!$(BSiP I2C2(2): DIO$(A%\$(B!<$(A%ISC(B
+	$(A!$(BSiP SPI0(5): AIO$(A%\$(B!<$(A%ISC(B
+	$(A!$(BSiP GPMC(12): $(A%3%s%\(BDIO/DIO$(A%\$(B!<$(A%ISC(BGPIO
+	$(A!$(BSiP GPMC(20): DIO$(A%\$(B!<$(A%ISC(BGPIO
+		DIO$(A%\$(B!<$(A%I$O(BCPU$(A%\$(B!<$(A%I$N(BGPIO$(A$G$O$J$/(BI2C$(AVFSy$,A<$$$+$b(B
+	$(A!$(BSiP PMIC(14): $(GgY$(AT49\@mSC(B
+$(A#?(B	$(A!$(BSiP RTC(2): $(ADZ2?(BRTC$(AVFSySC#(R*$k#?#)(B
+
+$(A!$PNW4#:%A%g%3%Y%S$(B!<$(A$N%1$(B!<$(A%9$K$(I!`$(A$^$k$3$H(B
+$(A!!!$2N?<#:(B
+	56mm x 35mm x 5mm : pocket Beagle
+	65mm x 30mm x 5mm : raspberry Pi zero
+
+==========================================================================
+
+Exineris Purple
+
+$(A%3%s%\!$(BDIO$(A!$(BAIO $(A$O(B Pocket Exineris $(A$r(B CPU $(A%\$(B!<$(A%I$H$7$F(B
+$(AHk3vA&$r$(I)/$(GZ/$(A$9$k%\$(B!<$(A%I$rW0WE$7$F(B Phoenix Contact $(A$N%1$(B!<$(A%9$K$(I!`$(A$a$?$b$N!#(B
+https://www.phoenixcontact.com/online/portal/jp?1dmy&urile=wcm%3apath%3a/jpja/web/main/products/subcategory_pages/ICS_modular_housings_P-01-12-03/10d97efb-d61d-4363-8853-97f3042d6b55
+
+$(A92M((B $(GgY$(AT4(B
+$(A!$(BSiP VIN_AC$(A#(RTOB$N$I$A$i$+#($b$7$/$O$(I"a$(A7=#)$,$D$J$,$C$?$i<Z$(I@>$(A$9$k$3$H#)(B
+$(A!!!$(BPoE (IEEE802.3af: DC 48V)
+$(A!!!$(BDC 24V
+$(A!$(BJIS B3502 $(A$N(B 5.1.1 $(A$K$(Gdm$(I)6$(A!"LX$KK2$(GUk$(AM#$(GgY$(A$O(B 5.1.1.3 PS2 $(A$K$(Gdm$(I)6$(A!#(B
+$(A!!(B# $(AR*$O(B 10ms (50Hz $(A$G0k%5%$%/%k(B)$(A$N$(GgY$(AT46O$G!"$(GgY$(A=b%3%s%G%s%5$J$$$7$O%-%c%Q%7%?$+$i(B
+$(A!!(B# $(A9)$(Ga?$(A$9$k$(GgY$(J!q$(A$,8w%A%C%W$N6(8q$(GgY$(AT4$(GgY$(J!q$(A$NWn5M%l%Y%k$rJX$k$3$H(B
+$(A!$$(GgY$(AT4%@%&%s$(GUk$(A$K(BGPIO$(A$N$I$l$+$r_5$/(B
+	CPU$(A$K8n$j$(B9~$(A$_$r$+$1$k$?$a(B
+$(A!$(BCPU $(A%\$(B!<$(A%I$N(B SiP VIN_BAT $(A$K9)$(Ga?$(A$9$k$(GgY$(AT4$r$b$D$3$H#(RTOB$+$i$(GrY$(I&1$(A#)(B
+$(A#?(B	$(GgY$(AT4%@%&%s$(GUk$(A$K(BCPU$(A%\$(B!<$(A%I$r%7%c%C%H%@%&%s$G$-$kH]A?$N%-%c%Q%7%?$r3V$D(B
+$(A#?(B	CPU$(A%\$(B!<$(A%I$r%j%A%&%`%$%*%s6~4N$(GgY$(A3X5H$G$"$k3L6H3V$?$;$k$h$&$K$9$k(B
+$(A#?(B	$(I)/$(GZ/$(A%\$(B!<$(A%I$b:,$a$F%j%A%&%`%$%*%s6~4N$(GgY$(A3X5H$G$"$k3L6H3V$?$;$k$h$&$K$9$k(B
+
+$(A92M((BI/O$(A#(%3%s%\!"(BDIO$(A!"(BAIO$(A#)#:(B
+	LED $(A#((BCPU$(A%\$(B!<$(A%I$N$rR}$-3v$;$J$$$(G^[$(A:O$O%I$(B!<$(A%?%\$(B!<$(A%I$K$b$D$1$k(B)
+		$(GgY$(AT4(B (Blue)
+		LED 4$(AI+(B (Green, Yellow, Orange, Red)
+	$(A%7%j%"%k#:(BRS422/485 x1
+	$(A%7%j%"%k#:(BUSB 2.0 x1
+	$(ASP$(Gn@(BLAN$(A#:(B100BASE-TX x1$(A#((BSiP $(A$N%G%U%)$,(B MII $(A$J$N$G(B 100Mbps$(A$H$9$k#)(B
+	RTC: DS3231$(A#(%P%C%F%j$(B!<$(A%P%C%/%"%C%W#)(B
+
+$(A%3%s%\#:(B $(I>3M~(B DI x8$(A!"$(I>3M~(B DO x4$(A!"(BAI x5$(A!"(BAO x1
+	AI: 4-20mA, SiP Ain1$(B!A(BAin5
+	AO: 4-20mA, SiP Ain0 $(A#($(Ga?gY$(A!$$(G`Ra?gY$(AGPLf?ID\$J$3$H#)(B
+	$(GgY$(AT4#:(BSiP AGND ADC: 0V, SiP VDDS: 1.8V
+
+DIO$(A%\$(B!<$(A%I#:$(I>3M~(B DI x16, $(I>3M~(B DO x16
+	$(I%\%w$(A$9$k(B LED $(A$r$D$1$k$3$H!#(B
+$(A#?(B	SiP $(A$N(B GPIO $(A$rJ9$&$N$G$bA<$$$,(B32pin$(A$rR}$-3v$9$3$H$K$J$k(B
+$(A#?(B	SiP $(A$N(B I2C2 $(A$G(B MCP23017 $(A5H$rJ9$C$F$bA<$$(B
+
+AIO$(A%\$(B!<$(A%I#:(BAI x16, AO x16
+
+----
+ADC$(A%A%C%W$N$(GrY$(I&1$(A$K$D$$$F(B
+
+$(A%3%s%\SC$N(B ADC $(A$K$O(B CPU $(A%\$(B!<$(A%IWTIm$N(B SiP Ain $(A$rJ9$&$D$b$j!#(B
+- 12$(A%R$-2¾ù%C%H$NVp4N1H$(Gg$$(APM(B(SAR) ADC-A
+- $(I#z$(ACk(B200k$(A%5%s%U$-2¾ú%k#((B5-Fìs/ch$(A#)(B-A
+- $(AHkA&$O!"(B8:1$(A%"%J%m%/$-2¾ù!$%9%$%C%A$K$h$j6`VX;/#((B8ch$(A$NR;V\$G(B40-Fìs$(A$0$i$$#)(B-A
+$(A$J$N$G(B 12bit 25kS/s $(A3L6H$HK<$C$FA<$$!#$3$l$,%3%s%\SC!#(B
+
+AIO$(A%\$(B!<$(A%I$ND\A&$OT=$($F$[$7$$$(B5$$(A$,$9$k$N$G!"(B
+$(A=bOq6H$,(B 12bit $(A$rT=$($F(B 1ch$(A$"$?$j(B40-Fìs$(AN4$(I<h$(A$N(B-A
+$(A%]%T%e%i$(B!<$(A$J%A%C%W$H$+$,$"$k$HfR$7$$!#(B
+
+==========================================================================
+$(A$=$NK{!"$(I<D$(GX6$(AOHKM$jJB$(Gbz(B
+
+$(ANB6H$(Gt?$(A>3(B
+-40$(A!f$+$i$K$7$h$&$H$9$k$H%A%C%W$r$(GrY$(A$P$J$$$H$J$i$J$$!#(B
+$(AIY$J$/$H$b(B TI WL1835MOD $(A$O(B-20$(A!f$+$i$J$N$G!"(B
+$(G\"$(AW4$NWn5M$(GY/$(AWwNB6H$O$3$l$K:O$o$;$6$k$r$($J$$!#(B
+
+IEEE1588 (PTP) $(A$rJ9$&$+(B
+	LAN $(ADZ$N%^%7%s$N$(GUkSS$(A$NM,FZ>+6H$,$"$,$k$N$OA<$$(B
+	$(AJ9$&$H$7$F$I$&J9$($k$N$+R*$(Gn~$(I-4(B (NTP $(A$,J9$($J$/$J$k$N$G(B)
+
+Security:
+	AM335x $(A$K(B FuseFarm $(A$G9LSP(BID$(A$,$"$k$N$rSP$(I'`$(A$KJ9$($J$$$+(B
+
+watchdog reset:
+	$(A%U%!$(B!<$(A%`%&%'%"$r8|PB$7$?aa$K(B watch dog reset $(A$,$+$+$C$?$i(B
+	$(A8|PB$5$l$kG0$N%U%!$(B!<$(A%`%&%'%"$G%V$(B!<$(A%H$9$k$h$&$K$9$k!-(B $(A$K$O:N$,1XR*#?(B
+
+RTC$(A$K$D$$$F#:(B
+	PMIC$(A$N(BSLEEP$(AW4$(Ghh$(A$G(B RTC $(ASC$N(B LDO1 $(A$N$_$K$(GgY$(AT49)$(Ga?$(A$G$-$=$&!#(B
+	C-SiP $(A$N%^%K%e%"%k$G$O(B PMIC ver.C $(A$G$O$G$-$J$$$HCwJ>!#(B
+	PMIC $(A$N%^%K%e%"%k$G$O(B ver $(A$K$(IJ=$(GO{$(A$J$/$G$-$=$&$K$(GKD$(A$($k$,!"(B
+	$(A6`$/$N(Bweb$(AIO$N%I%-%e%a%s%H$G$&$^$/$$$+$J$$$h$&$J$3$H$,$(GUs$(A$$$F$"$k(B
+
+$(GgY$(A3X$(JH`$(GY/$(A#:(B
+	$(A$3$s$J$N$KG,$(GgY$(A3X$r(B1$(B!A(B3$(A1>V1AP$K$9$k$N$b$"$j$+!#(B
+http://akizukidenshi.com/catalog/g/gK-13065/
+
+$(AWOI+#:(B
+Perple $(A$K$9$k$+(B Violet $(A$K$9$k$+(B Amethyst $(A$K$9$k$+!#(B
+https://ja.wikipedia.org/wiki/$(AWO(B
+https://ja.wikipedia.org/wiki/$(A>)WO(B
+https://ja.wikipedia.org/wiki/$(A=-$(I!f$(AWO(B
+
+$(AI+$N8P$8$G>)WO(B purple $(A$K$7$?!#(B
+$(GgY$(AT4(BLED$(A$rWOI+$K$H$bK<$C$?$,$(G`R$(IJj$(A$K8_$/$J$j$=$&$J$N$G=+@4$N$(Gn{wn$(A$H$7$F!#(B
+
+==========================================================================
+
