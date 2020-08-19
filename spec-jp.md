@@ -52,4 +52,41 @@
     - I2C0 はEPROMとPMONにつながっている
 	- Raspberry Pi では I2C1 につながってる
   - Nerves Hub 用の [Nerves Key](https://github.com/nerves-project/nerves_system_bbb#nerveskey) に該当
+- ウォッチドッグタイマ
+  - BBB/BBG 同様にCPUのタイマーで良いのでは
+    - あえて持つなら MAX6359 とかで
+- 入出力（ボード上にあるもの）
+  - LED
+    - 電源：青
+	- 緑、黄、橙、赤 USR0〜USR3, SiP GPMC_a5〜a8 (gpio1_21〜24)
+  - RS232（デバッグ用コンソールポート, SiP UART0） x1
+  - USB 2.0 Type C (SiP USB0) x1
+  - micro SDカード用ソケット x1 (SiP MMC0)
+  - 無線LAN (WiFi/BLE) x1
+	- TI [WL1835MOD](https://www.ti.com/product/WL1835MOD)
+	  - レベル変換(1.8V <-> 3.3V)をして SPI1, UART3 GPIO
+	    - これは BBG wireless の場合を踏襲
+      - あるいは SiP の SDIO を使うか
+- 電源
+  - SiP VIN_AC: ドータボードコネクタからのDC5V
+  - SiP VIN_USB: ボードの micro USB C コネクタからのDC5V
+  - SiP VIN_BAT: ドータボードコネクタからのバッテリーDC
+- コネクタ（SiP の信号を出す、GPIOを除いて46、GPIOは12か32）
+  - SiP USB1( 6): 各ボードの USB 2.0 x1
+  - SiP MII1(15): 各ボードの 100base-TX x1
+    - MII を持ち回るより PHY (LAN8710A等) を通した後が良いかも
+  - SiP UART1(4): 各ボードの RS422/485 x1
+  - SiP Ain0〜Ain5(6): コンボA/D用
+  - SiP I2C2(2): DIOボード用
+  - SiP SPI0(5): AIOボード用
+  - SiP GPMC(12): コンボDIO/DIOボード用GPIO
+  - SiP GPMC(20): DIOボード用GPIO
+	- DIOボードはCPUボードのGPIOではなくI2C制御が良いかも
+  - SiP PMIC(14): 電源管理用
+  - ？ SiP RTC(2): 内部RTC制御用（要る？）
+- 形状：チョコベビーのケースに収まること
+　- 参考：
+	- 56mm x 35mm x 5mm : pocket Beagle
+	- 65mm x 30mm x 5mm : raspberry Pi zero
 
+# CPUボード
