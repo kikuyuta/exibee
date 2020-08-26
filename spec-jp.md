@@ -7,8 +7,7 @@
 # 課題点
 - 電源の構成をどうするか
   - ExiA (BP2.0) のコンボ・DIO・AIOへのDC3.3Vは[Armadillo840mの3.3V](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch18.html#sct.power-a840m)から供給されてる
-    - 840m の供給能力は 1.4A max もあるが C-SiP の TI TPS65217C では 3.3V 用 LDO4 を400mAしか供給できない
-
+    - Armadillo 840m の供給能力は 1.4A max もあるが C-SiP の TI TPS65217C では 3.3V 用 LDO4 を400mAしか供給できない
 
 # 基本コンセプト
 - PLC風な Nerves マシンを作成する
@@ -33,12 +32,13 @@ ExiBee のベースになるほか、単体でも遊べるようにする
 
 SiP の調達について。
 このシリーズは温度範囲の違う2種類しか出回ってない。
-温度範囲の広い [OSD3358-512M-ICB](https://www.digikey.com/product-detail/en/octavo-systems-llc/OSD3358-512M-ICB/1676-1005-ND/9608235) を使う。
-- Soc: TI AM3358 (ARM Cortex-A8 1GHz, 3Dアクセラレータ, PRU)
-- RAM: 512MB DDR3L
-- EEPROM: 4KB
-- eMMC: 4GB
-- Temp: -40°C to 85°C
+温度範囲の広い方を使う。
+- [OSD3358-512M-ICB](https://www.digikey.com/product-detail/en/octavo-systems-llc/OSD3358-512M-ICB/1676-1005-ND/9608235)
+  - Soc: TI AM3358 (ARM Cortex-A8 1GHz, 3Dアクセラレータ, PRU)
+  - RAM: 512MB DDR3L
+  - EEPROM: 4KB
+  - eMMC: 4GB
+  - Temp: -40°C to 85°C
 
 モードが有るピンについては以下とする。
 - 基本リセットモード(モード番号7)で用いる
@@ -71,6 +71,7 @@ CPUボードからコンボ・DIO・AIOに接続するコネクタについて�
 これから以下の電源を準備する。
 - DC5V
 - DC3.3V
+- DC1.8V (ADC の reference 用)
 - I/O で外部へ電源供給を行うチップの電源（例：4〜20mA用）
 
 SiP には以下の電源ラインがある。
