@@ -1,6 +1,6 @@
 # ExiBee 仕様（ちょっと設計も）
 
-- Date: 19 Aug 2020
+- Date: 26 Aug 2020
 - Author: [KIKUCHI, Yutaka](https://github.com/kikuyuta)
 - Rev: 1.5
 
