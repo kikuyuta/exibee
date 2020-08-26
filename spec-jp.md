@@ -2,21 +2,15 @@
 
 - Date: 26 Aug 2020
 - Author: [KIKUCHI, Yutaka](https://github.com/kikuyuta)
-- Rev: 2.0
+- Rev: 2.1
 
 # 課題点
-- CPUボードをBP2.0 (= Exineris Armadillo = ExiA) 同様の構成にする
-  - DIMMボード同様の Pocket Exineris
-  - それをマウントした CPU ボード
-- 基板の入出力と基板同士の接続をどうするか
-  - CPUボードの入出力とコンボ・DIO・AIOへのコネクタピン
 - 電源の構成をどうするか
   - ExiA (BP2.0) のコンボ・DIO・AIOへのDC3.3Vは[Armadillo840mの3.3V](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch18.html#sct.power-a840m)から供給されてる
-    - 840m の供給能力は 1.4A max もあるが C-SiP の TI TPS65217C は 3.3V 用 LDO4 は400mAしか供給できない
+    - 840m の供給能力は 1.4A max もあるが C-SiP の TI TPS65217C では 3.3V 用 LDO4 を400mAしか供給できない
 
 
 # 基本コンセプト
-
 - PLC風な Nerves マシンを作成する
   - コンボ：CPU ボードに基本的な入出力を少しずつ多様に
   - DIO：CPU ボードにデジタル入出力をたくさん
@@ -30,40 +24,43 @@
   - 他の CC by-sa 4.0 を継承する可能性が高いので必然的にこれになるかと
 
 # CPUボード
- 
-- ExiBee のベースになるほか、単体でも遊べるようにする
-  - モードが有るピンについて
-    - 基本リセットモード(モード番号7)で用いる
-    - BeagleBone でモードを変えているのものは同様に変更しても良い
-    - ヤムを得ない場合は別モードで
-    - 使いたいピン機能がバッティングして仕様を満たせいない可能性あり
-      - これについては一旦考慮せずに仕様をつくって、ぶつかったらあとで検討
-- コネクタ
-  - ドータボード用コネクタ
-    - 表面実装コネクタ
-	  - [基板対基板コネクタ](https://www.hirose.com/product/document?clcode=CL0537-0731-3-86&productname=DF12(3.0)-60DP-0.5V(86)&series=DF12&documenttype=Catalog&lang=en&documentid=D31693_ja)
-	  の80pin x1 にするか、50pin x2 もしくは 60pin x2 とする
-      - [Armadillo 840m の DIMM コネクタ](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch04.html#sct.interface-layout-a840m)も参照すること
-  - [JTAG用 cTI（試作機に実装、本番では実装しない）](http://software-dl.ti.com/ccs/esd/documents/xdsdebugprobes/emu_jtag_connectors.html)
+ExiBee のベースになるほか、単体でも遊べるようにする
 - SiP: [OSD3358-C-SiP](https://octavosystems.com/octavo_products/osd335x-c-sip/)
   - SoC: TI AM335x (ARM Cortex-A8 1GHz, 3Dアクセラレータ, PRU)
   - MEMS 24MHz Oscillator
   - PMIC: TPS65217C, LDO: TL5209, Passives
   - BGA 20x20 1.27mm Grid, 27mmx27mm
-- このシリーズは温度範囲の違う2種類しか出回ってない。温度範囲の広い [OSD3358-512M-ICB](https://www.digikey.com/product-detail/en/octavo-systems-llc/OSD3358-512M-ICB/1676-1005-ND/9608235) を使う。
-  - Soc: TI AM3358 (ARM Cortex-A8 1GHz, 3Dアクセラレータ, PRU)
-  - RAM: 512MB DDR3L
-  - EEPROM: 4KB
-  - eMMC: 4GB
-  - Temp: -40°C to 85°C
-- セキュリティ: [Microchip ATECC608A](https://www.microchip.com/wwwproducts/en/ATECC608A)
-  - I2C2 につなげる（BBB/BBG の P9 に出ている。BBG の grove に出ている）
-    - I2C0 はEPROMとPMONにつながっている
-	- Raspberry Pi では I2C1 につながってる
-  - Nerves Hub 用の [Nerves Key](https://github.com/nerves-project/nerves_system_bbb#nerveskey) に該当
-- ウォッチドッグタイマ
-  - BBB/BBG 同様にCPUのタイマーで良いのでは
-    - あえて持つなら MAX6359 とかで
+
+SiP の調達について。
+このシリーズは温度範囲の違う2種類しか出回ってない。
+温度範囲の広い [OSD3358-512M-ICB](https://www.digikey.com/product-detail/en/octavo-systems-llc/OSD3358-512M-ICB/1676-1005-ND/9608235) を使う。
+- Soc: TI AM3358 (ARM Cortex-A8 1GHz, 3Dアクセラレータ, PRU)
+- RAM: 512MB DDR3L
+- EEPROM: 4KB
+- eMMC: 4GB
+- Temp: -40°C to 85°C
+
+モードが有るピンについては以下とする。
+- 基本リセットモード(モード番号7)で用いる
+- BeagleBone でモードを変えているのものは同様に変更する
+- ヤムを得ない場合は別モードで
+  - 使いたいピン機能がバッティングして仕様を満たせいない可能性あり
+    - これについては一旦考慮せずに仕様をつくって、ぶつかったらあとで検討
+
+CPUボードからコンボ・DIO・AIOに接続するコネクタについては以下で検討する。
+- 表面実装コネクタ
+  - [基板対基板コネクタ](https://www.hirose.com/product/document?clcode=CL0537-0731-3-86&productname=DF12(3.0)-60DP-0.5V(86)&series=DF12&documenttype=Catalog&lang=en&documentid=D31693_ja)
+	  の80pin x1 にするか、50pin x2 もしくは 60pin x2 とする
+- JTAG用 [cTI（試作機に実装、本番では実装しない）](http://software-dl.ti.com/ccs/esd/documents/xdsdebugprobes/emu_jtag_connectors.html)
+
+セキュリティチップについては [Microchip ATECC608A](https://www.microchip.com/wwwproducts/en/ATECC608A)を実装する。
+- I2C2 につなげる（BBB/BBG の P9 に出ている。BBG の grove に出ている）
+  - I2C0 はEPROMとPMONにつながっている
+  - 参考：Raspberry Pi では I2C1 につながってる
+- Nerves Hub 用の [Nerves Key](https://github.com/nerves-project/nerves_system_bbb#nerveskey) に該当
+
+ウォッチドッグタイマについては、BBB/BBG 同様にCPUのタイマーで良いと考える。
+あえて持つなら MAX6359 を使う。
 
 ## 電源
 以下が外部からの電源。これから基本的な電源を供給する。
