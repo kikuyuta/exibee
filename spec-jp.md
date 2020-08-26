@@ -2,7 +2,7 @@
 
 - Date: 19 Aug 2020
 - Author: [KIKUCHI, Yutaka](https://github.com/kikuyuta)
-- Rev: 1.4
+- Rev: 1.5
 
 # 課題点
 - CPUボードをBP2.0 (= Exineris Armadillo = ExiA) 同様の構成にする
@@ -72,22 +72,21 @@
 - 入出力（ボード上にあるもの）
   - LED
     - 電源：青
-	- 緑、黄、橙、赤 USR0〜USR3, SiP GPMC_a5〜a8 (gpio1_21〜24)
+	- 緑、黄、橙、赤 USR0〜USR3, SiP GPMC\_a5〜a8 (gpio1_21〜24)
   - RS232（デバッグ用コンソールポート, SiP UART0） x1
   - USB 2.0 Type C (SiP USB0) x1
   - micro SDカード用ソケット x1 (SiP MMC0)
   - 無線LAN (WiFi/BLE) x1
 	- TI [WL1835MOD](https://www.ti.com/product/WL1835MOD)
-	  - レベル変換(1.8V <-> 3.3V)をして SPI1, UART3 GPIO
-	    - これは BBG wireless の場合を踏襲
-      - あるいは SiP の SDIO を使うか
+	  - レベル変換(1.8V <-> 3.3V)をして SiP SDIO を使う
+
 - 電源
   1. SiP VIN_AC: ドータボードコネクタからのDC5V
   1. SiP VIN_USB: ボードの micro USB C コネクタからのDC5V
   1. SiP VIN_BAT: ドータボードコネクタからのバッテリーDC
 - コネクタ（SiP の信号を出す、GPIOを除いて46、GPIOは12か32）
-  - SiP USB1( 6): 各ボードの USB 2.0 x1
-  - SiP MII1(15): 各ボードの 100base-TX x1
+  - SiP USB1( 6): 各ボードの USB 2.0 x1 用
+  - SiP MII1(15): 各ボードの 1000base-T/100base-TX x1 用
     - MII を持ち回るより PHY (LAN8710A等) を通した後が良いかも
   - SiP UART1(4): 各ボードの RS422/485 x1
   - SiP Ain0〜Ain5(6): コンボA/D用
@@ -104,6 +103,7 @@
 	- 65mm x 30mm x 5mm : raspberry Pi zero
 
 # CPUボード
+pocket Exineris を用いて構成する。
 
 ## 共通 電源
 - SiP VIN_AC（以下のどちらか（もしくは両方）がつながったら稼働すること）
@@ -122,9 +122,14 @@
 ## 共通I/O
 - LED 入出力に従って
 - シリアル：RS422/485 x1
-- シリアル：USB 2.0 x1 (type C)
-- 有線LAN：100BASE-TX x1（SiP のデフォが MII なので 100Mbpsとする）
+- シリアル：USB 2.0 type C x1 (SiP USB1) 
+- 有線LAN：1000BASE-T x1
 - RTC: DS3231（バッテリーバックアップ）
+
+## ブート順
+1. pocket Exineris に SDカードがあったらそれから
+1. eMMC から
+1. （ネットブート）
 
 # Combo、DIO、AIO
 
@@ -147,6 +152,7 @@
 - 対応する LED をつけること。
   - ？	SiP の GPIO を使うのでも良いが32pinを引き出すことになる
   - ？	SiP の I2C2 で MCP23017 等を使っても良い
+    - ？ I2C で接続したときに割り込みを受けるようにするかどうか
 
 ## AIO（アナログ入出力）
 - AI x16
@@ -173,8 +179,8 @@ AIOボードの能力は越えてほしい気がするので、
 現状の最低動作温度はこれに合わせざるをえない。
 
 ## IEEE1588 (PTP) を使うか
-LAN 内のマシンの時計の同期精度があがるのは良い
-使うとしてどう使えるのか要調査 (NTP が使えなくなるので)
+LAN 内のマシンの時計の同期精度があがるのは良い。
+使うとしてどう使えるのか要調査 (NTP が使えなくなるので)。
 
 ## Security
 AM335x に FuseFarm で固有IDがあるのを有効に使えないか
@@ -194,7 +200,8 @@ PMIC のマニュアルでは ver に関係なくできそうに見えるが、
 http://akizukidenshi.com/catalog/g/gK-13065/
 
 ## 紫色について
-Elixir 絡みということで、コードネームに紫色を入れるべく検討した。
+今回は色に基づく名前を使うのをやめたが、Elixir 絡みということで、
+コードネームに紫色を入れるべく検討した。
 紫はいくつかの表現があって、Perple にするか Violet にするか Amethyst にするか調べてみた。
 - [紫](https://ja.wikipedia.org/wiki/紫)
 - [京紫](https://ja.wikipedia.org/wiki/京紫)
