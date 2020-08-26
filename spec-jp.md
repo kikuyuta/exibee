@@ -2,7 +2,7 @@
 
 - Date: 26 Aug 2020
 - Author: [KIKUCHI, Yutaka](https://github.com/kikuyuta)
-- Rev: 2.1
+- Rev: 2.2
 
 # 課題点
 - 電源の構成をどうするか
@@ -95,25 +95,6 @@ PoE に関しては今後の課題。
 なお、電源ダウン時にGPIOのどれかを叩くこと。
 これはCPUに割り込みをかけるため。
 
-## SiP から周辺への配線
-
-以下は参考として。当初 SiP と CPU ボードを分離する際に考えたコネクタピン。
-
-- コネクタ（SiP の信号を出す、GPIOを除いて46、GPIOは12か32）
-  - SiP USB1( 6): 各ボードの USB 2.0 x1 用
-  - SiP MII1(15): 各ボードの 1000base-T/100base-TX x1 用
-    - MII を持ち回るより PHY (LAN8710A等) を通した後が良いかも
-  - SiP UART1(4): 各ボードの RS422/485 x1
-  - SiP Ain0〜Ain5(6): コンボA/D用
-  - SiP I2C2(2): DIOボード用
-  - SiP SPI0(5): AIOボード用
-  - SiP GPMC(12): コンボDIO/DIOボード用GPIO
-  - SiP GPMC(20): DIOボード用GPIO
-	- DIOボードはCPUボードのGPIOではなくI2C制御が良いかも
-  - SiP PMIC(14): 電源管理用
-  - ？ SiP RTC(2): 内部RTC制御用（要る？）
-
-
 ## 共通I/O
 - LED
   - 電源：青
@@ -129,6 +110,17 @@ PoE に関しては今後の課題。
 - Grove コネクタ（Combo, DIO, AIO でつなげる位置でなくて良い）
   - UART2
   - I2C2
+
+## CPUボードから外部へのコネクタ
+
+- SiP 電源
+- SiP Ain0〜Ain5(6): コンボA/D用
+- SiP SPI0(5): AIOボード用
+- SiP GPMC(12): コンボDIO/DIOボード用GPIO
+- SiP GPMC(20): DIOボード用GPIO （コンボ用の GPMC も使って32接点にする）
+	- DIOボードはCPUボードのGPIOではなくI2C制御が良いかも
+- ？ SiP PMIC(14): 電源管理用（要る？）
+- ？ SiP RTC(2): 内部RTC制御用（要る？）
 
 ## ブート順
 1. SDカード
