@@ -2,18 +2,16 @@
 
 - Date: 26 Aug 2020
 - Author: [KIKUCHI, Yutaka](https://github.com/kikuyuta)
-- Rev: 1.5
+- Rev: 2.0
 
 # 課題点
 - CPUボードをBP2.0 (= Exineris Armadillo = ExiA) 同様の構成にする
   - DIMMボード同様の Pocket Exineris
   - それをマウントした CPU ボード
 - 基板の入出力と基板同士の接続をどうするか
-　- Pocket Exineris の入出力とCPUボードへのコネクタピン
-    - 特に無線チップをどうするか
   - CPUボードの入出力とコンボ・DIO・AIOへのコネクタピン
 - 電源の構成をどうするか
-  - ExiA のコンボ・DIO・AIOへのDC3.3Vは[Armadillo840mの3.3V](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch18.html#sct.power-a840m)から供給されてる
+  - ExiA (BP2.0) のコンボ・DIO・AIOへのDC3.3Vは[Armadillo840mの3.3V](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch18.html#sct.power-a840m)から供給されてる
     - 840m の供給能力は 1.4A max もあるが C-SiP の TI TPS65217C は 3.3V 用 LDO4 は400mAしか供給できない
 
 
@@ -24,18 +22,15 @@
   - DIO：CPU ボードにデジタル入出力をたくさん
   - AIO：CPU ボードにアナログ入出力をたくさん
 - CPU ボード
-  - Pocket Exineris に必要な基本入出力を構成
+  - 単体でも使える手のひらボード
   - 電源はこのボードで主に扱う
-- Pocket Exineris
-  - 単体でも使える小さなボード
-  - PocketBeagle やラズパイ0W同程度の大きさで、より使いやすいのを目指す
 - Beagle Bone Black/Green, Pocket Beagle とソフト互換性をもたせるようにしたい
   - すなわち Nerves で firmware を作るときに export MIX_TARGET=bbb で作製できると良い
 - 出来たものはオープンソースにする。ライセンスは CC by-sa 4.0 で
   - 他の CC by-sa 4.0 を継承する可能性が高いので必然的にこれになるかと
- 
-# Pocket Exineris
 
+# CPUボード
+ 
 - ExiBee のベースになるほか、単体でも遊べるようにする
   - モードが有るピンについて
     - 基本リセットモード(モード番号7)で用いる
@@ -69,21 +64,43 @@
 - ウォッチドッグタイマ
   - BBB/BBG 同様にCPUのタイマーで良いのでは
     - あえて持つなら MAX6359 とかで
-- 入出力（ボード上にあるもの）
-  - LED
-    - 電源：青
-	- 緑、黄、橙、赤 USR0〜USR3, SiP GPMC\_a5〜a8 (gpio1_21〜24)
-  - RS232（デバッグ用コンソールポート, SiP UART0） x1
-  - USB 2.0 Type C (SiP USB0) x1
-  - micro SDカード用ソケット x1 (SiP MMC0)
-  - 無線LAN (WiFi/BLE) x1
-	- TI [WL1835MOD](https://www.ti.com/product/WL1835MOD)
-	  - レベル変換(1.8V <-> 3.3V)をして SiP SDIO を使う
 
-- 電源
-  1. SiP VIN_AC: ドータボードコネクタからのDC5V
-  1. SiP VIN_USB: ボードの micro USB C コネクタからのDC5V
-  1. SiP VIN_BAT: ドータボードコネクタからのバッテリーDC
+## 電源
+以下が外部からの電源。これから基本的な電源を供給する。
+以下のどちらか（もしくは両方）がつながったら稼働すること。
+- PoE (IEEE802.3af: DC 48V)
+- DC 24V
+
+これから以下の電源を準備する。
+- DC5V
+- DC3.3V
+- I/O で外部へ電源供給を行うチップの電源（例：4〜20mA用）
+
+SiP には以下の電源ラインがある。
+1. SiP VIN_AC: ボードのDC5V
+1. SiP VIN_USB: ボードの micro USB C コネクタからのDC5V
+1. SiP VIN_BAT: ドータボードコネクタからのバッテリーDC
+   1. 電源ダウン時にCPUボードをシャットダウンできる容量のキャパシタを持つ
+   1. CPUボードをリチウムイオン二次電池等である程度持たせるようにする
+
+### 電源ダウンに対する動作
+JIS B3502 の 5.1.1 に準拠、特に瞬時停電は 5.1.1.3 PS2 に準拠。
+要は 10ms (50Hz で半サイクル)の電源断で、
+電解コンデンサないしはキャパシタから供給する電圧が
+各チップの定格電源電圧の最低レベルを守ること。
+- これは前の節での VIN_BAT へのバッテリーDC供給があれば自動的にクリア。
+
+この条件は、外部電源の DC24V に対して守られれば良い。
+PoE に関しては今後の課題。
+また、I/O で外部への電源供給を行うためのチップへの電源ラインについてもこの限りでない。
+
+なお、電源ダウン時にGPIOのどれかを叩くこと。
+これはCPUに割り込みをかけるため。
+
+## SiP から周辺への配線
+
+以下は参考として。当初 SiP と CPU ボードを分離する際に考えたコネクタピン。
+
 - コネクタ（SiP の信号を出す、GPIOを除いて46、GPIOは12か32）
   - SiP USB1( 6): 各ボードの USB 2.0 x1 用
   - SiP MII1(15): 各ボードの 1000base-T/100base-TX x1 用
@@ -97,38 +114,27 @@
 	- DIOボードはCPUボードのGPIOではなくI2C制御が良いかも
   - SiP PMIC(14): 電源管理用
   - ？ SiP RTC(2): 内部RTC制御用（要る？）
-- 形状：チョコベビーのケースに収まること
-  - 参考：
-	- 56mm x 35mm x 5mm : pocket Beagle
-	- 65mm x 30mm x 5mm : raspberry Pi zero
 
-# CPUボード
-pocket Exineris を用いて構成する。
-
-## 共通 電源
-- SiP VIN_AC（以下のどちらか（もしくは両方）がつながったら稼働すること）
-  - PoE (IEEE802.3af: DC 48V)
-  - DC 24V
-- JIS B3502 の 5.1.1 に準拠、特に瞬時停電は 5.1.1.3 PS2 に準拠。
-  - 要は 10ms (50Hz で半サイクル)の電源断で、電解コンデンサないしはキャパシタから
-  - 供給する電圧が各チップの定格電源電圧の最低レベルを守ること
-- 電源ダウン時にGPIOのどれかを叩く
-  - CPUに割り込みをかけるため
-- CPU ボードの SiP VIN_BAT に供給する電源をもつこと（以下から選択）
-  1. 電源ダウン時にCPUボードをシャットダウンできる容量のキャパシタを持つ
-  1. CPUボードをリチウムイオン二次電池等である程度持たせるようにする
-  1. 拡張ボードも含めてリチウムイオン二次電池等である程度持たせるようにする
 
 ## 共通I/O
-- LED 入出力に従って
+- LED
+  - 電源：青
+  - 緑、黄、橙、赤 USR0〜USR3, SiP GPMC\_a5〜a8 (gpio1_21〜24)
+- RS232（デバッグ用コンソールポート, SiP UART0） x1
+- micro SDカード用ソケット x1 (SiP MMC0)
 - シリアル：RS422/485 x1
-- シリアル：USB 2.0 type C x1 (SiP USB1) 
-- 有線LAN：1000BASE-T x1
-- RTC: DS3231（バッテリーバックアップ）
+- 有線LAN：100BASE-TX x1 (BBB/BBGと合わせるのに1Gbpsを目指さない)
+- RTC: DS3231: I2C2で内部接続
+  - ボタン電池でバックアップ
+  - もし VIN_BAT でバッテリーバックアップするならそちらを使っても良い
+- USB 2.0 Type C (SiP USB0) x1（Combo, DIO, AIO でつなげる位置でなくて良い）
+- Grove コネクタ（Combo, DIO, AIO でつなげる位置でなくて良い）
+  - UART2
+  - I2C2
 
 ## ブート順
-1. pocket Exineris に SDカードがあったらそれから
-1. eMMC から
+1. SDカード
+1. eMMC
 1. （ネットブート）
 
 # Combo、DIO、AIO
@@ -150,11 +156,12 @@ pocket Exineris を用いて構成する。
 - 絶縁 DI x16
 - 絶縁 DO x16
 - 対応する LED をつけること。
-  - ？	SiP の GPIO を使うのでも良いが32pinを引き出すことになる
-  - ？	SiP の I2C2 で MCP23017 等を使っても良い
-    - ？ I2C で接続したときに割り込みを受けるようにするかどうか
+  - SiP の GPIO を使うのでも良い（割り込みがかかるのでこちらが良いか）
+  - SiP の I2C2 で MCP23017 等を使っても良い
+    - I2C で接続したときに割り込みを受けるようにするかどうか
 
 ## AIO（アナログ入出力）
+アナログ入出力はすべて 4〜20mA カレントループとする。
 - AI x16
 - AO x16
 
