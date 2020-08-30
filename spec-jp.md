@@ -1,13 +1,14 @@
 # ExiBee 仕様（ちょっと設計も）
 
-- Date: 26 Aug 2020
+- Date: 30 Aug 2020
 - Author: [KIKUCHI, Yutaka](https://github.com/kikuyuta)
-- Rev: 2.2
+- Rev: 2.3
 
-# 課題点
+# 思いつく課題点
 - 電源の構成をどうするか
   - ExiA (BP2.0) のコンボ・DIO・AIOへのDC3.3Vは[Armadillo840mの3.3V](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch18.html#sct.power-a840m)から供給されてる
     - Armadillo 840m の供給能力は 1.4A max もあるが C-SiP の TI TPS65217C では 3.3V 用 LDO4 を400mAしか供給できない
+  - SiP からの電源供給で足りなければ CPU ボード上に電源を準備する
 
 # 基本コンセプト
 - PLC風な Nerves マシンを作成する
@@ -15,15 +16,17 @@
   - DIO：CPU ボードにデジタル入出力をたくさん
   - AIO：CPU ボードにアナログ入出力をたくさん
 - CPU ボード
-  - 単体でも使える手のひらボード
+  - CPUも含めてコンボ、DIO、AIOの共通部分の機能を担うボード
   - 電源はこのボードで主に扱う
+  - 単体でも使えるような、手のひらボードに出来ることも検討する（オプション）
 - Beagle Bone Black/Green, Pocket Beagle とソフト互換性をもたせるようにしたい
   - すなわち Nerves で firmware を作るときに export MIX_TARGET=bbb で作製できると良い
+    - 入出力は同じにする必要はない。例えばデジタル出力でGPIOの番号を合わせる必要はない
 - 出来たものはオープンソースにする。ライセンスは CC by-sa 4.0 で
   - 他の CC by-sa 4.0 を継承する可能性が高いので必然的にこれになるかと
 
 # CPUボード
-ExiBee のベースになるほか、単体でも遊べるようにする
+ExiBee のベースになる。また、できれば単体でも遊べるようにする。
 - SiP: [OSD3358-C-SiP](https://octavosystems.com/octavo_products/osd335x-c-sip/)
   - SoC: TI AM335x (ARM Cortex-A8 1GHz, 3Dアクセラレータ, PRU)
   - MEMS 24MHz Oscillator
@@ -43,15 +46,15 @@ SiP の調達について。
 モードが有るピンについては以下とする。
 - 基本リセットモード(モード番号7)で用いる
 - BeagleBone でモードを変えているのものは同様に変更する
-- ヤムを得ない場合は別モードで
+- ヤムを得ない場合は別モードで（おそらくこれはないと想定）
   - 使いたいピン機能がバッティングして仕様を満たせいない可能性あり
     - これについては一旦考慮せずに仕様をつくって、ぶつかったらあとで検討
 
 CPUボードからコンボ・DIO・AIOに接続するコネクタについては以下で検討する。
-- 表面実装コネクタ
-  - [基板対基板コネクタ](https://www.hirose.com/product/document?clcode=CL0537-0731-3-86&productname=DF12(3.0)-60DP-0.5V(86)&series=DF12&documenttype=Catalog&lang=en&documentid=D31693_ja)
-	  の80pin x1 にするか、50pin x2 もしくは 60pin x2 とする
+- フレキシブルケーブルでやりとりするためのコネクタ
 - JTAG用 [cTI（試作機に実装、本番では実装しない）](http://software-dl.ti.com/ccs/esd/documents/xdsdebugprobes/emu_jtag_connectors.html)
+- 参考：表面実装コネクタ
+  - [基板対基板コネクタ](https://www.hirose.com/product/document?clcode=CL0537-0731-3-86&productname=DF12(3.0)-60DP-0.5V(86)&series=DF12&documenttype=Catalog&lang=en&documentid=D31693_ja)
 
 セキュリティチップについては [Microchip ATECC608A](https://www.microchip.com/wwwproducts/en/ATECC608A)を実装する。
 - I2C2 につなげる（BBB/BBG の P9 に出ている。BBG の grove に出ている）
@@ -114,13 +117,15 @@ PoE に関しては今後の課題。
 ## CPUボードから外部へのコネクタ
 
 - SiP 電源
-- SiP Ain0〜Ain5(6): コンボA/D用
-- SiP SPI0(5): AIOボード用
-- SiP GPMC(12): コンボDIO/DIOボード用GPIO
-- SiP GPMC(20): DIOボード用GPIO （コンボ用の GPMC も使って32接点にする）
-	- DIOボードはCPUボードのGPIOではなくI2C制御が良いかも
-- ？ SiP PMIC(14): 電源管理用（要る？）
-- ？ SiP RTC(2): 内部RTC制御用（要る？）
+- SiP I2C   x1: コンボ(DIO)、DIOボード用
+- SiP SPI0  x1: コンボ(AIO)、AIOボード用
+- SiP GPMC  x2: コンボ、DIOボードで I2C の割り込みを受ける
+- 案から外すか検討中
+  - SiP Ain0〜Ain5(6): コンボA/D用（コンボのAIOはSPIかI2C経由とする）
+  - SiP GPMC(12): コンボDIO/DIOボード用GPIO（DIOはI2C経由とする）
+  - SiP GPMC(20): DIOボード用GPIO （DIOはI2C経由とする）
+  - ？ SiP PMIC(14): 電源管理用（要る？）
+  - ？ SiP RTC(2): 内部RTC制御用（要る？）
 
 ## ブート順
 1. SDカード
@@ -137,35 +142,41 @@ PoE に関しては今後の課題。
 - 絶縁 DI x8
 - 絶縁 DO x4
 - AI x5
-  - AI: 4-20mA, SiP Ain1〜Ain5
+  - AI: 4-20mA, SiP SPI (or I2C)
 - AO x1
-  - AO: 4-20mA, SiP Ain0 （給電・無給電切替可能なこと）
-- 対応する LED をつけること。
+  - AO: 4-20mA, SiP SPI (or I2C)
+    - 給電・無給電切替可能なこと
+- 対応する LED をつけること
 	
 ## DIO（デジタル入出力）
-- 絶縁 DI x16
-- 絶縁 DO x16
-- 対応する LED をつけること。
-  - SiP の GPIO を使うのでも良い（割り込みがかかるのでこちらが良いか）
-  - SiP の I2C2 で MCP23017 等を使っても良い
-    - I2C で接続したときに割り込みを受けるようにするかどうか
+フォトカプラ入出力とし、すべて絶縁すること。対応するLED表示をつけること。
+- DI x16
+- DO x16
+
+SiP の I2C2 で制御する。候補チップMCP23017など。
+
+### 入出力エッジによる割り込みについて
+I2C の1チップで16入出力を扱うとして、入出力エッジの割り込みを発生させる。
+割り込みは GPIO で受ける。
+入力のほか、出力のアンサーバックも獲るので GPIO は2系統使う。
 
 ## AIO（アナログ入出力）
 アナログ入出力はすべて 4〜20mA カレントループとする。
+給電・無給電切替可能なこと絶縁しなくてよい。対応するLED表示をつけること。
 - AI x16
 - AO x16
 
 ### ADCチップの選択について
-コンボ用の ADC には CPU ボード自身の SiP Ain を使うつもり。
+外付けのチップを使うので SiP の能力以上にしたい。
+
+SiP のADCは以下の性能を持っている。
 - 12ビットの逐次比較型(SAR) ADC
 - 毎秒200kサンプル（5μs/ch）
 - 入力は、8:1アナログ・スイッチにより多重化（8chの一周で40μsぐらい）
 
-なので 12bit 25kS/s 程度と思って良い。これがコンボ用。
-
-AIOボードの能力は越えてほしい気がするので、
-解像度が 12bit を越えて 1chあたり40μs未満の
-ポピュラーなチップとかがあると嬉しい。
+なので 12bit 25kS/s 程度と思って良い。
+これを超えるとなると、解像度が 12bit を越えて 1chあたり40μs未満程度か。
+この性能でポピュラーなチップとかがあると嬉しい。
 
 
 # その他、検討先送り事項
