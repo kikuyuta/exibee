@@ -1,8 +1,8 @@
 # ExiBee 仕様（ちょっと設計も）
 
-- Date: 30 Aug 2020
+- Date: 01 Sep 2020
 - Author: [KIKUCHI, Yutaka](https://github.com/kikuyuta)
-- Rev: 2.3
+- Rev: 2.4
 
 # 思いつく課題点
 - 電源の構成をどうするか
