@@ -237,7 +237,7 @@ http://akizukidenshi.com/catalog/g/gK-13065/
 ## 紫色について
 今回は色に基づく名前を使うのをやめたが、Elixir 絡みということで、
 コードネームに紫色を入れるべく検討した。
-紫はいくつかの表現があって、Perple にするか Violet にするか Amethyst にするか調べてみた。
+紫はいくつかの表現があって、Purple にするか Violet にするか Amethyst にするか調べてみた。
 - [紫](https://ja.wikipedia.org/wiki/紫)
 - [京紫](https://ja.wikipedia.org/wiki/京紫)
 - [江戸紫](https://ja.wikipedia.org/wiki/江戸紫)
