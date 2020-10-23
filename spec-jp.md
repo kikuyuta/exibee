@@ -1,17 +1,10 @@
-# ExiBee 仕様（ちょっと設計も）
+# ExiBee 仕様
 
-- Date: 02 Sep 2020
+- Date: 03 Sep 2020
 - Author: [KIKUCHI, Yutaka](https://github.com/kikuyuta)
-- Rev: 2.5.2
+- Rev: 2.5.3
 
-# 思いつく課題点
-- 電源の構成をどうするか
-  - ExiA (BP2.0) のコンボ・DIO・AIOへのDC3.3Vは[Armadillo840mの3.3V](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch18.html#sct.power-a840m)から供給されてる
-    - Armadillo 840m の供給能力は 1.4A max もあるが C-SiP の TI TPS65217C では 3.3V 用 LDO4 を400mAしか供給できない
-    - SiP からの電源供給で足りなければ CPU ボード上に電源を準備する
-  - VDD_BAT (PMIC) にキャパシタを接続してうまく動作するか
-    - 電源off時に3.3Vだけ供給停止が遅れる例が報告されてるらしい
-	- デフォルトではリチウムポリマー電池を想定しているようで、充電電圧が5Vまで上がらない。SoC の設定である程度まではあげられるが、キャパシタの容量を十分に活かせるか怪しい
+この文書は ExiBee の仕様を定めるものである。ただし、実現可能性の観点で設計部分にも踏み込んだ内容になっている。設計に関して検討の余地が残されている項目については、本仕様の元に設計事業者との協議で決定するものとする。
 
 # 基本コンセプト
 - PLC風な Nerves マシンを作成する
@@ -100,6 +93,17 @@ PoE に関しては今後の課題。
 
 なお、電源ダウン時にGPIOのどれかを叩くこと。
 これはCPUに割り込みをかけるため。
+
+### 課題点
+
+- 構成をどうするか
+  - ExiA (BP2.0) のコンボ・DIO・AIOへのDC3.3Vは[Armadillo840mの3.3V](https://manual.atmark-techno.com/armadillo-840/armadillo-840_product_manual_ja-1.10.0/ch18.html#sct.power-a840m)から供給されてる
+    - Armadillo 840m の供給能力は 1.4A max もあるが C-SiP の TI TPS65217C では 3.3V 用 LDO4 を400mAしか供給できない
+    - SiP からの電源供給で足りなければ CPU ボード上に電源を準備する
+  - VDD_BAT (PMIC) にキャパシタを接続してうまく動作するか
+    - 電源off時に3.3Vだけ供給停止が遅れる例が報告されてるらしい
+	- デフォルトではリチウムポリマー電池を想定しているようで、充電電圧が5Vまで上がらない。SoC の設定である程度まではあげられるが、キャパシタの容量を十分に活かせるか怪しい
+
 
 ## 共通I/O
 CPUボードの持つI/Oについて。
@@ -237,7 +241,7 @@ http://akizukidenshi.com/catalog/g/gK-13065/
 ## 紫色について
 今回は色に基づく名前を使うのをやめたが、Elixir 絡みということで、
 コードネームに紫色を入れるべく検討した。
-紫はいくつかの表現があって、Perple にするか Violet にするか Amethyst にするか調べてみた。
+紫はいくつかの表現があって、Purple にするか Violet にするか Amethyst にするか調べてみた。
 - [紫](https://ja.wikipedia.org/wiki/紫)
 - [京紫](https://ja.wikipedia.org/wiki/京紫)
 - [江戸紫](https://ja.wikipedia.org/wiki/江戸紫)
