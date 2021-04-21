@@ -1,8 +1,8 @@
 # ExiBee 仕様
 
-- Date: 31 Mar 2021
+- Date: 21 Apr 2021
 - Author: [KIKUCHI, Yutaka](https://github.com/kikuyuta)
-- Rev: 2.5.3
+- Rev: 2.6.0
 
 この文書は ExiBee の仕様を定めるものである。ただし、実現可能性の観点で設計部分にも踏み込んだ内容になっている。設計に関して検討の余地が残されている項目については、本仕様の元に設計事業者との協議で決定するものとする。
 
