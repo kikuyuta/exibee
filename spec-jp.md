@@ -33,7 +33,8 @@ ExiBee のベースになる共通の機能を実現する基板。
   - MEMS 24MHz Oscillator
   - PMIC: TPS65217C, LDO: TL5209, Passives
   - BGA 20x20 1.27mm Grid, 27mmx27mm
-  - Temp: -40°C to 85°C
+  - Temp: -25°C〜70°C
+    - 殆どのチップは -40°C〜85°C を満たすが一部のチップがこれを満たさない可能性がある
 
 モードが有るSiPピンについては以下とする。
 - 基本リセットモード(モード番号7)で用いる
